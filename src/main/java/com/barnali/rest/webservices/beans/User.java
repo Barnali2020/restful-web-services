@@ -2,12 +2,17 @@ package com.barnali.rest.webservices.beans;
 
 import java.util.Date;
 
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
+
 public class User {
 	
 	private Integer id;
 	
+	@Size(min=2 , max=20, message="Name should be with 2 to 20 characters")
 	private String name;
 	
+	@Past
 	private Date birthDate;
 	
 	//not necessary to be a public constructor

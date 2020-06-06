@@ -4,6 +4,8 @@ import java.net.URI;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,15 +46,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/user")
-	public ResponseEntity<User> saveUser(@RequestBody User user) {
-		
-		if(user.getName() == null || user.getName().isEmpty()) {
-			throw new UserException("Missing user attributes");
-		}
-		
-		if(user.getBirthDate() == null) {
-			throw new UserException("Missing user attributes");
-		}
+	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 		
 		User savedUser = userService.save(user);
 		
