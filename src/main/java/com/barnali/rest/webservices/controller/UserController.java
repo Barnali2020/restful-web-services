@@ -1,7 +1,6 @@
 package com.barnali.rest.webservices.controller;
 
 import java.net.URI;
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -87,5 +86,5 @@ public class UserController {
 		//else return OK status
 		return new ResponseEntity<Object>(responseBody, HttpStatus.OK);
 	}
-
+	
 }
