@@ -6,8 +6,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,8 +21,6 @@ import com.barnali.rest.webservices.error.UserException;
 import com.barnali.rest.webservices.services.UserDaoService;
 import com.barnali.rest.webservices.success.SuccessResponse;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
-
 @RestController
 public class UserController {
 	
@@ -32,29 +28,23 @@ public class UserController {
 	private UserDaoService userService;
 	
 	//retrieve all users
-	@GetMapping("/users")
+	@GetMapping("/all-users")
 	public List<User> retrieveAllUsers(){
 		return userService.findAll();
 	}
 	
 	//retrieve single user
 	@GetMapping("/user/{id}")
-	public Resource<User> retrieveUser(@PathVariable int id) {
+	public User retrieveUser(@PathVariable int id) {
 		User user = userService.findOne(id);
 		
 		if(user == null)
 			throw new UserException("Id-"+id+" not found");
 		
-		
-		//want to get the link exposed by retrieveAllUsers() method using HATEOAS
-		Resource<User> resource = new Resource<User>(user);
-		ControllerLinkBuilder linkTo = linkTo(ControllerLinkBuilder.methodOn(this.getClass()).retrieveAllUsers());
-		resource.add(linkTo.withRel("all-users"));
-		
-		return resource;
+		return user;
 	}
 	
-	@PostMapping("/user")
+	@PostMapping("/create-user")
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 		
 		User savedUser = userService.save(user);
@@ -71,7 +61,7 @@ public class UserController {
 		
 	}
 	
-	@DeleteMapping("/user/{id}")
+	@DeleteMapping("/delete-user/{id}")
 	public ResponseEntity<Object> deleteUser(@PathVariable int id) {
 		
 		User user = userService.deleteUser(id);
