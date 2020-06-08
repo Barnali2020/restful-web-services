@@ -1,8 +1,8 @@
 package com.barnali.rest.webservices.beans;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonFilter;
 
-@JsonIgnoreProperties(value= {"field1", "field2"})
+@JsonFilter("FilterId")
 public class FilterBean {
 
 	private String field1;
