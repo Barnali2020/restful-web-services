@@ -1,10 +1,12 @@
 package com.barnali.rest.webservices.beans;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import io.swagger.annotations.ApiModel;
@@ -25,6 +27,9 @@ public class User {
 	@Past
 	@ApiModelProperty(notes="Birth date should before current date")				//For API documentation
 	private Date birthDate;
+	
+	@OneToMany(mappedBy="user")
+	private List<Post> post;
 	
 	//not necessary to be a public constructor
 	protected User() {
