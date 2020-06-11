@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Post {
 	
@@ -16,6 +18,7 @@ public class Post {
 	private String description;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
+	@JsonIgnore											//used because we don't want recursive call. Otherwise Post will print User and User will print Post
 	private User user;
 	
 	

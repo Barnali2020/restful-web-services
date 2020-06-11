@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.barnali.rest.webservices.beans.Post;
 import com.barnali.rest.webservices.beans.User;
 import com.barnali.rest.webservices.error.UserException;
 import com.barnali.rest.webservices.services.UserDaoService;
@@ -38,12 +39,12 @@ public class UserJpaController {
 	//retrieve single user
 	@GetMapping("/jpa/user/{id}")
 	public User retrieveUser(@PathVariable int id) {
-		Optional<User> user = userRepository.findById(id);
+		Optional<User> userOptional = userRepository.findById(id);
 		
-		if(!user.isPresent())													//check for null object
+		if(!userOptional.isPresent())													//check for null object
 			throw new UserException("Id-"+id+" not found");
 		
-		return user.get();														//get actual object
+		return userOptional.get();														//get actual object
 	}
 	
 	@PostMapping("/jpa/create-user")
@@ -67,5 +68,19 @@ public class UserJpaController {
 	public void deleteUser(@PathVariable int id) {
 		userRepository.deleteById(id);
 	}
+	
+	
+	//retrieve all posts
+	@GetMapping("/jpa/user/{id}/all-posts")
+	public List<Post> retrieveAllPostsOfUser(@PathVariable int id){
+		
+		Optional<User> userOptional = userRepository.findById(id);
+		
+		if(!userOptional.isPresent())													//check for null object
+			throw new UserException("Id-"+id+" not found");
+		
+		return userOptional.get().getPost();
+	}
+	
 
 }
