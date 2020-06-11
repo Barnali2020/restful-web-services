@@ -59,10 +59,10 @@
 		</dependency>
 		
 		<!-- dependency for authentication -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
+		</dependency> -->
 		
 		
 		<!-- dependency to pickup changes automatically without being sever startup-->

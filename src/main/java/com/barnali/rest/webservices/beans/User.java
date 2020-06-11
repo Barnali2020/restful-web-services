@@ -2,23 +2,28 @@ package com.barnali.rest.webservices.beans;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel(description="All details about the user")
+@ApiModel(description="All details about the user")									//For API documentation
+@Entity																				//For JPA
 public class User {
 	
+	@Id
+	@GeneratedValue
 	private Integer id;
 	
 	@Size(min=2 , max=20, message="Name should be with 2 to 20 characters")
-	@ApiModelProperty(notes="Name should be within 2 to 20 characters")
+	@ApiModelProperty(notes="Name should be within 2 to 20 characters")				//For API documentation
 	private String name;
 	
 	@Past
-	@ApiModelProperty(notes="Birth date should before current date")
+	@ApiModelProperty(notes="Birth date should before current date")				//For API documentation
 	private Date birthDate;
 	
 	//not necessary to be a public constructor
