@@ -20,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.barnali.rest.webservices.beans.Post;
 import com.barnali.rest.webservices.beans.User;
 import com.barnali.rest.webservices.error.UserException;
+import com.barnali.rest.webservices.services.PostRepository;
 import com.barnali.rest.webservices.services.UserDaoService;
 import com.barnali.rest.webservices.services.UserRepository;
 import com.barnali.rest.webservices.success.SuccessResponse;
@@ -29,6 +30,9 @@ public class UserJpaController {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private PostRepository postRepository;
 	
 	//retrieve all users
 	@GetMapping("/jpa/all-users")
@@ -80,6 +84,33 @@ public class UserJpaController {
 			throw new UserException("Id-"+id+" not found");
 		
 		return userOptional.get().getPost();
+	}
+	
+	@PostMapping("/jpa/user/{id}/create-post")
+	public ResponseEntity<User> createPost (@PathVariable int id, @Valid @RequestBody Post post) {
+		
+		Optional<User> userOptional = userRepository.findById(id);
+		
+		if(!userOptional.isPresent())													//check for null object
+			throw new UserException("Id-"+id+" not found");
+		
+		User user = userOptional.get();
+		
+		post.setUser(user);
+		
+		Post savedPost = postRepository.save(post);
+		
+		
+		//return the created status and created resource uri
+		// /user/{id}
+		URI location = ServletUriComponentsBuilder
+		.fromCurrentRequest()
+		.path("/{id}")
+		.buildAndExpand(savedPost.getId())
+		.toUri();
+		
+		return ResponseEntity.created(location).build();
+		
 	}
 	
 
