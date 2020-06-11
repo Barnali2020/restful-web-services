@@ -45,5 +45,27 @@ public class UserJpaController {
 		
 		return user.get();														//get actual object
 	}
+	
+	@PostMapping("/jpa/create-user")
+	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+		
+		User savedUser = userRepository.save(user);
+		
+		//return the created status and created resource uri
+		// /user/{id}
+		URI location = ServletUriComponentsBuilder
+		.fromCurrentRequest()
+		.path("/{id}")
+		.buildAndExpand(savedUser.getId())
+		.toUri();
+		
+		return ResponseEntity.created(location).build();
+		
+	}
+	
+	@DeleteMapping("/jpa/delete-user/{id}")
+	public void deleteUser(@PathVariable int id) {
+		userRepository.deleteById(id);
+	}
 
 }
